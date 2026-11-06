@@ -22,6 +22,7 @@ Distinguer :
 | `NewEvaluationWizard.java:423-478` | L'extraction utilise `PageExtractor(document, firstPage + 1, lastPage + 1)`. | Découpage par plages de pages PDF ; **pas de désimposition A3→A4 dans ce chemin d'import**. |
 | `ExerciseCorrectionWorkflow.java:18-20` | La navigation vers la page d'exercice borne l'indice à la dernière page existante. | Une carte de pages incohérente peut conduire visuellement à une mauvaise page sans erreur explicite ; cela ne démontre pas un transfert de note. |
 | `EvaluationFolders.java:199-219` | Les sauvegardes de données d'évaluation écrivent un fichier temporaire puis le déplacent, avec solution de repli si le déplacement atomique est indisponible. | Point favorable pour l'intégrité d'écriture ; reste à tester les coupures et les changements de copie. |
+| `Edition.java:560-587` | Le fichier d'annotations YAML est retrouvé via le chemin/nom du PDF (local ou centralisé), et non par une empreinte du contenu. | Remplacer manuellement le PDF à chemin identique peut réassocier des annotations préexistantes à un autre contenu. Cas à reproduire en test ; ce n'est pas une preuve de confusion en usage normal. |
 | `FairnessExport.java:19-25,39-61` | Export Markdown anonymisé des corrections, désignées `Copie 01`, etc., et des erreurs/méthodes récurrentes. | Opportunité d'analyse qualitative ; prévoir une table de correspondance vérifiable et stable hors de l'export. |
 
 ## Ce que les tests réussis démontrent — et ne démontrent pas
