@@ -31,16 +31,16 @@ Sur Windows, à partir de `master` au commit `69408b8a`, l'utilisateur a exécut
 
 ## Contrats prioritaires à formaliser et tester
 
-**P0 — Avant toute correction réelle**
+**P0 — Avant toute correction réelle (priorité revue après examen d'un extrait de deux copies)**
 1. Le scan original est conservé et identifié par SHA-256.
-2. Chaque page source a exactement une destination attendue (ou une exclusion manuelle explicite et consignée).
-3. Toute anomalie de comptage, doublon d'identifiant, page manquante/insérée ou discordance de bornes bloque l'import jusqu'à validation explicite.
+2. Les pages doivent être rattachées à la bonne copie : pages du livret, feuilles de réponses libres et brouillons insérés. Les pages excédentaires ne sont pas nécessairement des erreurs ; permettre leur affectation ou leur exclusion simple.
+3. Toute ambiguïté de frontière entre copies ou toute feuille libre intercalée appelle une vérification visuelle ciblée et une affectation explicite ; ne pas imposer un contrôle lourd à chaque scan régulier.
 4. Chaque PDF élève porte un identifiant technique immuable ; un manifeste enregistre `source_hash`, indices des pages PDF source, ordre des pages A4, identifiant élève vérifié, hash du PDF produit.
-5. Les livrets A3 imposés sont désassemblés dans une étape explicite, testée sur différentes orientations de scan.
+5. Les livrets A3 imposés sont désassemblés dans une étape explicite ; les feuilles supplémentaires non imposées doivent pouvoir être rattachées à l'élève même si son nombre de pages diffère.
 6. Les notes et annotations sont écrites, relues et exportées via l'identité du document ; permutation d'ordre, renommage, fermeture/réouverture et interruption ne doivent jamais transférer de notes vers une autre copie.
 
 **P1 — Correction qualitative assistée**
-7. Les observations IA citent une zone source (`copy_id`, page et rectangle) et une catégorie d'erreur révisable.
+7. Les observations IA citent une ou plusieurs zones source (`copy_id`, page et rectangle) et une catégorie d'erreur révisable, car les réponses d'un exercice peuvent être dispersées sur la page supplémentaire ou sur un brouillon.
 8. Aucune reconnaissance/OCR/IA ne modifie une note définitive sans validation humaine.
 9. L'export de synthèse des erreurs se recoupe avec les annotations et les notes individuelles ; les fréquences sont reproductibles.
 
@@ -60,3 +60,7 @@ Sur Windows, à partir de `master` au commit `69408b8a`, l'utilisateur a exécut
 - Résultats GitHub Actions sur la branche d'audit et couverture des tests.
 
 Aucune modification du fonctionnement n'est autorisée implicitement par ce document : la correction des points P0 doit se faire avec des tests de régression et validation explicite.
+
+## Essai documentaire : extrait de deux copies (6 novembre 2026)
+
+Le scan soumis en conversation comprend 4 faces A3 paysage, chacune contenant deux pages A4 côte à côte. Deux copies contiguës, identifiants visibles 1 et 2. L'ordre physique par copie est `(p4 | p1), (p2 | p3)` ; reconstitution vérifiée visuellement dans l'ordre A4 `p1, p2, p3, p4`. Les deux copies ont été désimposées en PDF individuels 4 pages **hors du dépôt**, sans ajouter les vraies copies à Git. La page 4 est intitulée « PAGE SUPPLÉMENTAIRE » et est partie intégrante du livret. La copie 1 contient sur cette page une suite de l'exercice 6 ; la copie 2 y contient des travaux concernant plusieurs exercices. Cela invalide le présupposé `exercice => une page fixe` pour l'analyse automatique ; les feuilles de brouillon *insérées* ou feuilles de réponses supplémentaires *hors livret* demeurent à tester. La priorité est l'affectation simple des feuilles à la bonne copie, plutôt qu'une validation exhaustive de toutes les pages de scans réguliers.
